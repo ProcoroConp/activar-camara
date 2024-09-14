@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abrir Cámara en Ventana Emergente</title>
+    <title>Abrir Cámara Nativa</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,27 +19,19 @@
             color: #000000;
             border: none;
             cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #e0e0e0;
         }
     </style>
 </head>
 <body>
 
-    <h1>Abrir Cámara en Ventana Emergente</h1>
+    <h1>Usar Cámara Nativa</h1>
 
-    <!-- Botón que abre la cámara en una ventana emergente -->
-    <button class="button" onclick="abrirVentana()">Abrir Cámara</button>
-
-    <script>
-        // Función para abrir la cámara en una ventana emergente
-        function abrirVentana() {
-            window.open('camarapage.html', 'popup', 'width=400,height=400');
-        }
-    </script>
-
-</body>
-</html>
-
-    </script>
+    <!-- Botón que abre la cámara nativa del teléfono -->
+    <input type="file" accept="image/*" capture="environment" class="button">
 
 </body>
 </html>
