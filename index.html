@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activar Cámara y Escanear QR</title>
+    <title>Escanear Código QR</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,14 +24,11 @@
         .button:hover {
             background-color: #e0e0e0; /* Botón cambia a gris claro al pasar el cursor */
         }
-        video, #reader {
+        #reader {
             margin-top: 20px;
-            width: 300px; /* Tamaño ajustado del video y área de QR */
+            width: 300px; /* Tamaño ajustado */
             height: auto;
             border: 2px solid #FF0000; /* Borde rojo */
-        }
-        #reader {
-            display: none; /* Ocultar el lector QR hasta que se haga clic en el botón */
         }
         h1 {
             color: #FF0000; /* Título en rojo */
@@ -42,14 +39,7 @@
 </head>
 <body>
 
-    <h1>Activar Cámara y Escanear QR</h1>
-
-    <!-- Botón para activar la cámara trasera -->
-    <button class="button" onclick="activarCamara()">Activar Cámara Trasera</button>
-    <!-- Video en tiempo real -->
-    <div class="container">
-        <video id="video" autoplay playsinline></video>
-    </div>
+    <h1>Escanear Código QR</h1>
 
     <!-- Botón para iniciar el escaneo del código QR -->
     <button class="button" onclick="iniciarEscaneoQR()">Abrir Lector QR</button>
@@ -57,37 +47,14 @@
     <div id="reader"></div>
 
     <script>
-        // Función para activar la cámara trasera para visualización
-        function activarCamara() {
-            const video = document.getElementById('video');
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                // Seleccionar la cámara trasera
-                navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: { ideal: "environment" } // "environment" selecciona la cámara trasera
-                    }
-                })
-                .then(function(stream) {
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(function(error) {
-                    alert('No se pudo activar la cámara trasera: ' + error);
-                });
-            } else {
-                alert('La cámara no es compatible con este dispositivo.');
-            }
-        }
-
         // Función para iniciar el escaneo del código QR (separada)
         function iniciarEscaneoQR() {
             const reader = document.getElementById('reader');
             reader.style.display = 'block'; // Mostrar el contenedor del escáner de QR
 
             const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-                alert(`Código QR detectado: ${decodedText}`);
-                // Puedes redirigir a una URL o realizar alguna acción con el resultado
-                window.location.href = decodedText;
+                // Siempre redirigir a una página específica, sin importar el contenido del QR
+                window.location.href = "https://tu-sitio.com"; // Reemplaza esta URL por la que desees
             };
 
             const qrCodeErrorCallback = (errorMessage) => {
