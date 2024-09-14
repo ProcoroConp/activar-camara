@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activar Cámara</title>
+    <title>Escanear Código QR</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,41 +23,50 @@
         .button:hover {
             background-color: #45a049;
         }
-        video {
+        #reader {
             margin-top: 20px;
             width: 80%;
             height: auto;
         }
     </style>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 </head>
 <body>
 
-    <h1>Activar Cámara</h1>
+    <h1>Escanear Código QR</h1>
 
     <!-- Botón para activar la cámara -->
-    <button class="button" onclick="activarCamara()">Activar Cámara</button>
+    <button class="button" onclick="escanearQR()">Escanear Código QR</button>
 
-    <!-- Video en tiempo real -->
-    <div class="container">
-        <video id="video" autoplay playsinline></video>
-    </div>
+    <!-- Contenedor para el escáner de QR -->
+    <div id="reader" style="width:300px;"></div>
 
     <script>
-        // Función para activar la cámara
-        function activarCamara() {
-            const video = document.getElementById('video');
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function(stream) {
-                        video.srcObject = stream;
-                        video.play();
-                    })
-                    .catch(function(error) {
-                        alert('No se pudo activar la cámara: ' + error);
-                    });
-            } else {
-                alert('La cámara no es compatible con este dispositivo.');
-            }
+        // Función para iniciar el escaneo del código QR
+        function escanearQR() {
+            const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+                alert(`Código QR detectado: ${decodedText}`);
+                // Puedes redirigir a una URL o realizar alguna acción con el resultado
+                window.location.href = decodedText;
+            };
+
+            const qrCodeErrorCallback = (errorMessage) => {
+                // Manejador de error durante el escaneo
+                console.log(`Error al escanear: ${errorMessage}`);
+            };
+
+            const html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start(
+                { facingMode: { exact: "environment" } }, // Seleccionar la cámara trasera
+                {
+                    fps: 10,    // Velocidad de fotogramas para el escaneo
+                    qrbox: 250  // Tamaño del área de escaneo
+                },
+                qrCodeSuccessCallback,
+                qrCodeErrorCallback
+            ).catch(err => {
+                alert(`No se pudo iniciar el escaneo: ${err}`);
+            });
         }
     </script>
 
