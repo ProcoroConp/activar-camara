@@ -3,70 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escanear Código QR</title>
+    <title>Activar Cámara Trasera</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background-color: #f7f7f7;
+            background-color: #000000; /* Fondo negro */
+            color: #FF0000; /* Letras principales en rojo */
         }
         .button {
             padding: 10px 20px;
             font-size: 18px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #FFFFFF; /* Botón blanco */
+            color: #000000; /* Letras negras */
             border: none;
             cursor: pointer;
             margin-top: 20px;
         }
         .button:hover {
-            background-color: #45a049;
+            background-color: #e0e0e0; /* Botón cambia a gris claro al pasar el cursor */
         }
-        #reader {
+        video {
             margin-top: 20px;
-            width: 80%;
+            width: 300px; /* Tamaño ajustado del video */
             height: auto;
+            border: 2px solid #FF0000; /* Borde rojo alrededor del video */
+        }
+        h1 {
+            color: #FF0000; /* Título en rojo */
         }
     </style>
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 </head>
 <body>
 
-    <h1>Escanear Código QR</h1>
+    <h1>Activar Cámara Trasera</h1>
 
     <!-- Botón para activar la cámara -->
-    <button class="button" onclick="escanearQR()">Escanear Código QR</button>
+    <button class="button" onclick="activarCamara()">Activar Cámara Trasera</button>
 
-    <!-- Contenedor para el escáner de QR -->
-    <div id="reader" style="width:300px;"></div>
+    <!-- Video en tiempo real -->
+    <div class="container">
+        <video id="video" autoplay playsinline></video>
+    </div>
 
     <script>
-        // Función para iniciar el escaneo del código QR
-        function escanearQR() {
-            const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-                alert(`Código QR detectado: ${decodedText}`);
-                // Puedes redirigir a una URL o realizar alguna acción con el resultado
-                window.location.href = decodedText;
-            };
-
-            const qrCodeErrorCallback = (errorMessage) => {
-                // Manejador de error durante el escaneo
-                console.log(`Error al escanear: ${errorMessage}`);
-            };
-
-            const html5QrCode = new Html5Qrcode("reader");
-            html5QrCode.start(
-                { facingMode: { exact: "environment" } }, // Seleccionar la cámara trasera
-                {
-                    fps: 10,    // Velocidad de fotogramas para el escaneo
-                    qrbox: 250  // Tamaño del área de escaneo
-                },
-                qrCodeSuccessCallback,
-                qrCodeErrorCallback
-            ).catch(err => {
-                alert(`No se pudo iniciar el escaneo: ${err}`);
-            });
+        // Función para activar la cámara trasera
+        function activarCamara() {
+            const video = document.getElementById('video');
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Seleccionar la cámara trasera
+                navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: { ideal: "environment" } // "environment" selecciona la cámara trasera
+                    }
+                })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(error) {
+                    alert('No se pudo activar la cámara trasera: ' + error);
+                });
+            } else {
+                alert('La cámara no es compatible con este dispositivo.');
+            }
         }
     </script>
 
