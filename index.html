@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activar Cámara</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        video {
+            margin-top: 20px;
+            width: 80%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Activar Cámara</h1>
+
+    <!-- Botón para activar la cámara -->
+    <button class="button" onclick="activarCamara()">Activar Cámara</button>
+
+    <!-- Video en tiempo real -->
+    <div class="container">
+        <video id="video" autoplay playsinline></video>
+    </div>
+
+    <script>
+        // Función para activar la cámara
+        function activarCamara() {
+            const video = document.getElementById('video');
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .catch(function(error) {
+                        alert('No se pudo activar la cámara: ' + error);
+                    });
+            } else {
+                alert('La cámara no es compatible con este dispositivo.');
+            }
+        }
+    </script>
+
+</body>
+</html>
