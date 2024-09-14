@@ -30,6 +30,9 @@
             height: auto;
             border: 2px solid #FF0000; /* Borde rojo */
         }
+        #reader {
+            display: none; /* Ocultar el lector QR hasta que se haga clic en el botón */
+        }
         h1 {
             color: #FF0000; /* Título en rojo */
         }
@@ -49,7 +52,7 @@
     </div>
 
     <!-- Botón para iniciar el escaneo del código QR -->
-    <button class="button" onclick="iniciarEscaneoQR()">Escanear Código QR</button>
+    <button class="button" onclick="iniciarEscaneoQR()">Abrir Lector QR</button>
     <!-- Contenedor para el escáner de QR -->
     <div id="reader"></div>
 
@@ -78,6 +81,9 @@
 
         // Función para iniciar el escaneo del código QR (separada)
         function iniciarEscaneoQR() {
+            const reader = document.getElementById('reader');
+            reader.style.display = 'block'; // Mostrar el contenedor del escáner de QR
+
             const qrCodeSuccessCallback = (decodedText, decodedResult) => {
                 alert(`Código QR detectado: ${decodedText}`);
                 // Puedes redirigir a una URL o realizar alguna acción con el resultado
