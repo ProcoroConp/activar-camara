@@ -1,0 +1,54 @@
+<!-- camerapage.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cámara Trasera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #000000;
+            color: #FF0000;
+        }
+        video {
+            margin-top: 20px;
+            width: 300px;
+            height: auto;
+            border: 2px solid #FF0000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cámara Trasera</h1>
+    <div class="container">
+        <video id="video" autoplay playsinline></video>
+    </div>
+
+    <script>
+        // Función para activar la cámara trasera
+        const video = document.getElementById('video');
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Seleccionar la cámara trasera
+            navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: { ideal: "environment" }
+                }
+            })
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(error) {
+                alert('No se pudo activar la cámara: ' + error);
+            });
+        } else {
+            alert('La cámara no es compatible con este dispositivo.');
+        }
+    </script>
+
+</body>
+</html>
