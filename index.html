@@ -53,8 +53,9 @@
             reader.style.display = 'block'; // Mostrar el contenedor del escáner de QR
 
             const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-                // Siempre redirigir a una página específica, sin importar el contenido del QR
-                window.location.href = "https://tu-sitio.com"; // Reemplaza esta URL por la que desees
+                alert(`Código QR detectado: ${decodedText}`);
+                // Puedes redirigir a una URL o realizar alguna acción con el resultado
+                window.location.href = decodedText; // O puedes comentar esto si no quieres redirigir automáticamente
             };
 
             const qrCodeErrorCallback = (errorMessage) => {
@@ -67,7 +68,7 @@
 
             // Iniciar el escaneo usando la cámara trasera
             html5QrCode.start(
-                { facingMode: { ideal: "environment" } }, // Seleccionar la cámara trasera
+                { facingMode: { exact: "environment" } }, // Seleccionar la cámara trasera
                 {
                     fps: 10,    // Velocidad de fotogramas para el escaneo
                     qrbox: 250  // Tamaño del área de escaneo
