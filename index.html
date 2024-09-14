@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escanear Código QR</title>
+    <title>Activar Cámara y Escanear QR</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,9 +24,9 @@
         .button:hover {
             background-color: #e0e0e0; /* Botón cambia a gris claro al pasar el cursor */
         }
-        #reader {
+        video, #reader {
             margin-top: 20px;
-            width: 300px; /* Tamaño ajustado */
+            width: 300px; /* Tamaño ajustado del video y área de QR */
             height: auto;
             border: 2px solid #FF0000; /* Borde rojo */
         }
@@ -39,16 +39,44 @@
 </head>
 <body>
 
-    <h1>Escanear Código QR</h1>
+    <h1>Activar Cámara y Escanear QR</h1>
 
-    <!-- Botón para activar la cámara y escanear -->
+    <!-- Botón para activar la cámara trasera -->
+    <button class="button" onclick="activarCamara()">Activar Cámara Trasera</button>
+    <!-- Video en tiempo real -->
+    <div class="container">
+        <video id="video" autoplay playsinline></video>
+    </div>
+
+    <!-- Botón para iniciar el escaneo del código QR -->
     <button class="button" onclick="iniciarEscaneoQR()">Escanear Código QR</button>
-
     <!-- Contenedor para el escáner de QR -->
-    <div id="reader" style="width:300px;"></div>
+    <div id="reader"></div>
 
     <script>
-        // Función para iniciar el escaneo del código QR
+        // Función para activar la cámara trasera para visualización
+        function activarCamara() {
+            const video = document.getElementById('video');
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Seleccionar la cámara trasera
+                navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: { ideal: "environment" } // "environment" selecciona la cámara trasera
+                    }
+                })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(error) {
+                    alert('No se pudo activar la cámara trasera: ' + error);
+                });
+            } else {
+                alert('La cámara no es compatible con este dispositivo.');
+            }
+        }
+
+        // Función para iniciar el escaneo del código QR (separada)
         function iniciarEscaneoQR() {
             const qrCodeSuccessCallback = (decodedText, decodedResult) => {
                 alert(`Código QR detectado: ${decodedText}`);
@@ -57,7 +85,7 @@
             };
 
             const qrCodeErrorCallback = (errorMessage) => {
-                // Manejador de error durante el escaneo (se puede personalizar)
+                // Manejador de error durante el escaneo
                 console.log(`Error al escanear: ${errorMessage}`);
             };
 
