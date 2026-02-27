@@ -1,37 +1,497 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abrir Cámara Nativa</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background-color: #000000;
-            color: #FF0000;
-        }
-        .button {
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #FFFFFF;
-            color: #000000;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .button:hover {
-            background-color: #e0e0e0;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autorización Desafío Dalí México</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f1f1f;
+      --muted: #6b6b6b;
+      --line: #e7e7e7;
+      --accent: #121212;
+      --accent-2: #f5f5f5;
+      --success-bg: #f0fdf4;
+      --success-text: #166534;
+      --error-bg: #fef2f2;
+      --error-text: #991b1b;
+      --radius: 14px;
+      --shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.45;
+      padding: 24px 14px;
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      background: #fff;
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      text-align: center;
+      font-family: "Playfair Display", Georgia, serif;
+      letter-spacing: 0.3px;
+      font-size: clamp(1.35rem, 2vw + 1rem, 2rem);
+    }
+
+    .subtitle {
+      text-align: center;
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #fff;
+      color: var(--text);
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      border-color: #a5a5a5;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .checkbox-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      margin-top: 4px;
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-weight: 500;
+      color: #2b2b2b;
+      font-size: 0.94rem;
+    }
+
+    .signature-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .signature-box canvas {
+      display: block;
+      width: 100%;
+      height: 220px;
+      touch-action: none;
+      background: #fff;
+    }
+
+    .sig-controls {
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid var(--line);
+      background: var(--accent-2);
+      padding: 10px;
+    }
+
+    .btn,
+    .btn-secondary {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.2s ease;
+    }
+
+    .btn:active,
+    .btn-secondary:active {
+      transform: translateY(1px);
+    }
+
+    .btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      margin-top: 18px;
+    }
+
+    .btn:hover {
+      opacity: 0.92;
+    }
+
+    .btn[disabled] {
+      cursor: not-allowed;
+      opacity: 0.68;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      border: 1px solid #cfcfcf;
+      color: #111;
+      padding: 8px 12px;
+      font-size: 0.88rem;
+    }
+
+    .message {
+      margin-top: 16px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.93rem;
+      display: none;
+    }
+
+    .message.success {
+      display: block;
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid #86efac;
+    }
+
+    .message.error {
+      display: block;
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid #fecaca;
+    }
+
+    .required {
+      color: #b00020;
+      margin-left: 2px;
+    }
+
+    @media (max-width: 520px) {
+      .card {
+        padding: 16px;
+      }
+
+      .signature-box canvas {
+        height: 190px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card">
+      <h1>DESAFÍO DALÍ MÉXICO</h1>
+      <p class="subtitle">Autorización de Uso de Imagen y Material Audiovisual</p>
 
-    <h1>Usar Cámara Nativa</h1>
+      <form id="autorizacionForm">
+        <div class="field">
+          <label for="nombre">Nombre completo<span class="required">*</span></label>
+          <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="Ingresa tu nombre completo" />
+        </div>
 
-    <!-- Botón que abre la cámara nativa del teléfono -->
-    <input type="file" accept="image/*" capture="environment" class="button">
+        <div class="field">
+          <label for="correo">Correo electrónico<span class="required">*</span></label>
+          <input id="correo" name="correo" type="email" required autocomplete="email" placeholder="correo@ejemplo.com" />
+        </div>
 
+        <div class="field">
+          <div class="checkbox-row">
+            <input id="autorizacion" name="autorizacion" type="checkbox" required />
+            <label for="autorizacion">
+              Autorizo a Desafío Dalí México a utilizar el material audiovisual enviado para fines publicitarios en medios impresos, digitales y cualquier medio presente o futuro.
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Firma digital<span class="required">*</span></label>
+          <div class="signature-box">
+            <canvas id="signatureCanvas"></canvas>
+            <div class="sig-controls">
+              <button type="button" id="clearSignature" class="btn-secondary">Limpiar firma</button>
+            </div>
+          </div>
+        </div>
+
+        <button id="submitBtn" type="submit" class="btn">Generar Autorización</button>
+        <div id="message" class="message"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Librerías permitidas -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <script>
+    // ==========================
+    // CONFIGURACIÓN EMAILJS
+    // ==========================
+    // 1) Sustituye los valores por tus credenciales reales de EmailJS.
+    // 2) En tu plantilla de EmailJS, crea variables como:
+    //    - to_name
+    //    - to_email
+    //    - pdf_filename
+    //    - pdf_base64  (adjunta este valor como archivo desde plantilla si tu cuenta lo permite)
+    const EMAILJS_CONFIG = {
+      publicKey: "TU_PUBLIC_KEY_AQUI",      // <-- Reemplaza
+      serviceId: "TU_SERVICE_ID_AQUI",      // <-- Reemplaza
+      templateId: "TU_TEMPLATE_ID_AQUI"     // <-- Reemplaza
+    };
+
+    const { jsPDF } = window.jspdf;
+    const form = document.getElementById("autorizacionForm");
+    const message = document.getElementById("message");
+    const submitBtn = document.getElementById("submitBtn");
+    const canvas = document.getElementById("signatureCanvas");
+    const clearSignatureBtn = document.getElementById("clearSignature");
+
+    let signaturePad;
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = `message ${type}`;
+    }
+
+    function clearMessage() {
+      message.textContent = "";
+      message.className = "message";
+    }
+
+    function resizeCanvas() {
+      const ratio = Math.max(window.devicePixelRatio || 1, 1);
+      const oldData = signaturePad && !signaturePad.isEmpty() ? signaturePad.toData() : null;
+
+      canvas.width = canvas.offsetWidth * ratio;
+      canvas.height = canvas.offsetHeight * ratio;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(ratio, ratio);
+
+      if (signaturePad) {
+        signaturePad.clear();
+        if (oldData) {
+          signaturePad.fromData(oldData);
+        }
+      }
+    }
+
+    function sanitizeFileName(value) {
+      return value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9]/g, "_")
+        .replace(/_+/g, "_")
+        .replace(/^_|_$/g, "");
+    }
+
+    function formatDateTime(now) {
+      const dd = String(now.getDate()).padStart(2, "0");
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const yyyy = now.getFullYear();
+      const hh = String(now.getHours()).padStart(2, "0");
+      const min = String(now.getMinutes()).padStart(2, "0");
+      const sec = String(now.getSeconds()).padStart(2, "0");
+
+      return {
+        human: `${dd}/${mm}/${yyyy} ${hh}:${min}:${sec}`,
+        compact: `${yyyy}${mm}${dd}_${hh}${min}${sec}`
+      };
+    }
+
+    function generatePdf({ nombre, correo, fechaHora, firmaDataUrl, fileName }) {
+      const doc = new jsPDF({ unit: "mm", format: "letter" });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const margin = 20;
+      const maxWidth = pageWidth - margin * 2;
+
+      let y = 22;
+
+      doc.setFont("times", "bold");
+      doc.setFontSize(18);
+      doc.text("DESAFÍO DALÍ MÉXICO", pageWidth / 2, y, { align: "center" });
+
+      y += 9;
+      doc.setFont("times", "normal");
+      doc.setFontSize(13);
+      doc.text("Autorización de Uso de Imagen y Material Audiovisual", pageWidth / 2, y, { align: "center" });
+
+      y += 14;
+      doc.setFontSize(11);
+      doc.setFont("times", "bold");
+      doc.text("Nombre:", margin, y);
+      doc.setFont("times", "normal");
+      doc.text(nombre, margin + 18, y);
+
+      y += 7;
+      doc.setFont("times", "bold");
+      doc.text("Correo:", margin, y);
+      doc.setFont("times", "normal");
+      doc.text(correo, margin + 16, y);
+
+      y += 11;
+      doc.setFont("times", "normal");
+      const legalText =
+        "Por medio de la presente, yo, la persona firmante, autorizo expresamente a Desafío Dalí México a utilizar mi imagen, voz, nombre y cualquier material audiovisual enviado por mí o capturado durante mi participación, para fines publicitarios, promocionales, culturales y de difusión en medios impresos, digitales, audiovisuales y en cualquier medio presente o futuro, sin limitación territorial ni temporal. Esta autorización se otorga de manera voluntaria y gratuita, sin que ello genere compensación económica alguna.";
+
+      const legalLines = doc.splitTextToSize(legalText, maxWidth);
+      doc.text(legalLines, margin, y, { maxWidth });
+
+      y += legalLines.length * 5 + 10;
+      doc.setFont("times", "bold");
+      doc.text("Firma:", margin, y);
+
+      y += 4;
+      doc.setDrawColor(180);
+      doc.rect(margin, y, 75, 35);
+      doc.addImage(firmaDataUrl, "PNG", margin + 2, y + 2, 71, 31);
+
+      doc.setFont("times", "bold");
+      doc.text("Fecha y hora:", margin + 86, y + 10);
+      doc.setFont("times", "normal");
+      doc.text(fechaHora, margin + 86, y + 17);
+
+      doc.save(fileName);
+
+      return doc;
+    }
+
+    async function sendPdfByEmail({ nombre, correo, fileName, pdfBase64 }) {
+      if (
+        !EMAILJS_CONFIG.publicKey ||
+        !EMAILJS_CONFIG.serviceId ||
+        !EMAILJS_CONFIG.templateId ||
+        EMAILJS_CONFIG.publicKey.includes("TU_") ||
+        EMAILJS_CONFIG.serviceId.includes("TU_") ||
+        EMAILJS_CONFIG.templateId.includes("TU_")
+      ) {
+        throw new Error("Falta configurar EmailJS en el código.");
+      }
+
+      emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+
+      return emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+        to_name: nombre,
+        to_email: correo,
+        pdf_filename: fileName,
+        pdf_base64: pdfBase64
+      });
+    }
+
+    clearSignatureBtn.addEventListener("click", () => {
+      signaturePad.clear();
+      clearMessage();
+    });
+
+    window.addEventListener("resize", resizeCanvas);
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearMessage();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+      const autorizacion = document.getElementById("autorizacion").checked;
+
+      if (!nombre || !correo || !autorizacion) {
+        showMessage("Por favor completa todos los campos obligatorios.", "error");
+        return;
+      }
+
+      if (signaturePad.isEmpty()) {
+        showMessage("La firma digital es obligatoria.", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Generando...";
+
+      try {
+        const now = new Date();
+        const { human, compact } = formatDateTime(now);
+        const nombreArchivo = sanitizeFileName(nombre) || "Sin_Nombre";
+        const fileName = `Autorizacion_Dali_${nombreArchivo}_${compact}.pdf`;
+        const firmaDataUrl = signaturePad.toDataURL("image/png");
+
+        const doc = generatePdf({
+          nombre,
+          correo,
+          fechaHora: human,
+          firmaDataUrl,
+          fileName
+        });
+
+        const pdfBase64 = doc.output("datauristring").split(",")[1];
+
+        try {
+          await sendPdfByEmail({
+            nombre,
+            correo,
+            fileName,
+            pdfBase64
+          });
+          showMessage("Autorización generada, descargada y enviada correctamente por correo.", "success");
+        } catch (emailError) {
+          showMessage(
+            `Autorización generada y descargada. No se pudo enviar por correo: ${emailError.message}`,
+            "error"
+          );
+        }
+      } catch (error) {
+        showMessage(`Ocurrió un error al generar la autorización: ${error.message}`, "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Generar Autorización";
+      }
+    });
+
+    signaturePad = new SignaturePad(canvas, {
+      minWidth: 0.8,
+      maxWidth: 2.2,
+      penColor: "#111111"
+    });
+    resizeCanvas();
+  </script>
 </body>
 </html>
